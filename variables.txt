@@ -1,0 +1,54 @@
+# AWS Project Configuration Values
+# ================================
+
+# REGION
+Region: eu-west-1 (Ireland)
+
+# VPC
+VPC Name: Production-VPC
+VPC CIDR: 10.0.0.0/16
+
+# INTERNET GATEWAY
+IGW Name: IGW-Production
+
+# SUBNETS
+# AZ A (eu-west-1a)
+Public Subnet A CIDR: 10.0.1.0/24
+Private Subnet A CIDR: 10.0.10.0/24
+
+# AZ B (eu-west-1b)
+Public Subnet B CIDR: 10.0.2.0/24
+Private Subnet B CIDR: 10.0.20.0/24
+
+# ROUTE TABLES
+Public Route Table: 0.0.0.0/0 → IGW-Production
+Private Route Table: 0.0.0.0/0 → NAT Gateway
+
+# NAT GATEWAY
+Location: Public Subnet A
+Elastic IP: Assigned automatically (Note: ~$35/month cost)
+
+# SECURITY GROUPS
+ALB SG Inbound: HTTP 80 (0.0.0.0/0), HTTPS 443 (0.0.0.0/0)
+EC2 SG Inbound: HTTP 80 (from ALB SG only)
+RDS SG Inbound: MySQL 3306 (from EC2 SG only)
+
+# EC2 / LAUNCH TEMPLATE
+AMI: Amazon Linux 2023
+Instance Type: t2.micro (Free tier eligible)
+Subnet: Private subnets
+
+# AUTO SCALING GROUP
+Min: 2
+Desired: 2
+Max: 5
+Scaling Policy: CPU > 70%
+
+# RDS DATABASE
+Engine: MySQL
+Deployment: Multi-AZ
+Networking: Private subnets only
+
+# S3 BUCKET
+Features: Versioning enabled, Encryption enabled
+Use: Images, backups, static files

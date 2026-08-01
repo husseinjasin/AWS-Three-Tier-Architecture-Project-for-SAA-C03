@@ -1,0 +1,38 @@
+                    ┌─────────────────┐
+                    │   🌐 Internet    │
+                    └────────┬────────┘
+                             │
+                    ┌────────▼────────┐
+                    │  Application    │
+                    │  Load Balancer  │
+                    │  (Public Subs)  │
+                    └────────┬────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+         ┌────▼────┐     ┌────▼────┐    ┌────▼────┐
+         │ EC2 A   │     │ EC2 B   │    │ EC2 C   │
+         │(Private)│     │(Private)│    │(Private)│
+         │ Apache  │     │ Apache  │    │ Apache  │
+         └────┬────┘     └────┬────┘    └────┬────┘
+              │              │              │
+              └──────────────┼──────────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+         ┌────▼────┐     ┌────▼────┐    ┌────▼────┐
+         │  RDS    │     │   S3    │    │  NAT    │
+         │ MySQL   │     │ Bucket  │    │Gateway  │
+         │Multi-AZ │     │(Images) │    │         │
+         └─────────┘     └─────────┘    └─────────┘
+
+AVAILABILITY ZONE A (eu-west-1a)    AVAILABILITY ZONE B (eu-west-1b)
+┌─────────────────────────────┐    ┌─────────────────────────────┐
+│ Public Subnet: 10.0.1.0/24  │    │ Public Subnet: 10.0.2.0/24  │
+│ - ALB (endpoint)            │    │ - ALB (endpoint)            │
+│ - NAT Gateway (AZ A only)   │    │                             │
+├─────────────────────────────┤    ├─────────────────────────────┤
+│ Private Subnet: 10.0.10.0/24│    │ Private Subnet: 10.0.20.0/24│
+│ - EC2 instances             │    │ - EC2 instances             │
+│ - RDS (primary in AZ A)     │    │ - RDS (standby in AZ B)     │
+└─────────────────────────────┘    └─────────────────────────────┘
