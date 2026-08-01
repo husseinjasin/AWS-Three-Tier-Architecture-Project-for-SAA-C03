@@ -89,4 +89,4 @@ I forgot to add `#!/bin/bash` at the top of my User Data script. Without this, C
 - Add HTTPS with Certificate Manager
 - Connect RDS to EC2 with real database queries
 - Add CloudFront CDN for static assets
-- Write Infrastructure as Code using Terraform
+- Write Infrastructure as Code (IaC) using Terraform
